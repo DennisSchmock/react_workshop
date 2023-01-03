@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useCallback, useState } from 'react';
 import './App.css';
 import { Todo } from './components/ToDoItem';
 import { TodoList } from './components/ToDoList';
@@ -14,24 +14,31 @@ export const App = () => {
     setTodos([...todos, newTodo]);
   };
 
-  const toggleDone = (id: string) => {
-    const newArray = todos.map((todo) => {
-      return todo.id === id ? { ...todo, done: !todo.done } : todo;
-    });
-    setTodos(newArray);
-  };
-  const handleDelete = (id: string) => {
-    const newTodoArray = todos.filter((todo) => {
-      return todo.id !== id;
-    });
-    setTodos(newTodoArray);
-  };
+  const toggleDone = useCallback(
+    (id: string) => {
+      const newArray = todos.map((todo) => {
+        return todo.id === id ? { ...todo, done: !todo.done } : todo;
+      });
+      setTodos(newArray);
+    },
+    [todos]
+  );
+  const handleDelete = useCallback(
+    (id: string) => {
+      console.log(id);
+      const newTodoArray = todos.filter((todo) => {
+        return todo.id !== id;
+      });
+      setTodos(newTodoArray);
+    },
+    [todos]
+  );
 
   return (
     <div className="App">
       <h1>IST Todo App</h1>
       <NewTodoForm handleAddNewTodo={addNewTodo}></NewTodoForm>
-      <TodoList toggleDone={toggleDone} handleDelete={handleDelete} handleToogleEdit={toggleDone} todos={todos} />
+      <TodoList toggleDone={toggleDone} handleDelete={handleDelete} todos={todos} />
     </div>
   );
 };

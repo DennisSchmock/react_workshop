@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 export interface Todo {
   id: string;
   done: boolean;
@@ -9,9 +9,26 @@ interface ToDoProps {
   todo: Todo;
   toggleDone: (id: string) => void;
   handleDelete: (id: string) => void;
-  handleToogleEdit: (id: string) => void;
 }
-export const ToDoItem = ({ todo, toggleDone, handleDelete }: ToDoProps) => {
+export const ToDoItemMemo = ({ todo, toggleDone, handleDelete }: ToDoProps) => {
+  //   const [countToggle, setCountToggle] = useState<number>(0);
+
+  useEffect(() => {
+    console.log('I rendered', todo.id);
+  }, []);
+
+  //   const expensiveFunktion = () => {
+  //     let counting = 0;
+  //     for (let i = 0; i < 100000000; i++) {
+  //       counting++;
+  //     }
+  //     return counting;
+  //   };
+
+  //   const memoizedExpensiveValue = useMemo(() => {
+  //     return expensiveFunktion();
+  //   }, [todo]);
+
   return (
     <div className="todo">
       <li>
@@ -24,6 +41,13 @@ export const ToDoItem = ({ todo, toggleDone, handleDelete }: ToDoProps) => {
         Slet
       </button>
       <input readOnly className="todo-checkbox" type="checkbox" checked={todo.done} />
+      {/* {memoizedExpensiveValue} */}
     </div>
   );
 };
+
+// const areTheyEqual = (prev: ToDoProps, next: ToDoProps): boolean => {
+//   return true;
+// };
+
+export const ToDoItem = React.memo(ToDoItemMemo);
